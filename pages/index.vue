@@ -34,7 +34,7 @@ export default {
         // console.log(res);
         // res返回的数据中 res.data是一个对象 下面有一个data数组用解构的方法分解出来
         const {data} = res.data
-        console.log(data);
+        // console.log(data);
         this.banners = data
       })
     }
@@ -46,11 +46,9 @@ export default {
     min-width:1000px;
     margin:0 auto;
     position:relative;
-
     /deep/ .el-carousel__container{
         height:700px;
     }
-
     .banner-image{
         width:100%;
         height:100%;
