@@ -31,7 +31,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/element-ui',
+    { src: '@/plugins/localStorage', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -50,7 +51,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL:'http://157.122.54.189:9095'
+    baseURL:'http://localhost:1337'
   },
   /*
   ** Build configuration

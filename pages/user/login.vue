@@ -30,7 +30,6 @@
 
 <script>
 import LoginForm from "@/components/user/loginForm"
-import RegisterForm from "@/components/user/registerForm"
 export default {
     data(){
         return {
@@ -38,8 +37,7 @@ export default {
         }
     },
     components:{
-        LoginForm,
-        RegisterForm
+        LoginForm
     },
     methods: {
         handleChangeTab(index){
