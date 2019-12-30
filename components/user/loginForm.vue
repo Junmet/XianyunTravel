@@ -4,7 +4,7 @@
       <el-input v-model="form.username" placeholder="用户名/手机"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="password">
       <el-input v-model="form.password" placeholder="密码" type="password"></el-input>
     </el-form-item>
 
@@ -21,7 +21,7 @@ export default {
   data() {
     //   判断定义用户名规则
     var validateUsername = (rule, value, callback) => {
-      let reg =/^\d{11}$/;
+      let reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
       if (reg.test(value)) {
         callback();
       } else {
@@ -29,21 +29,23 @@ export default {
       }
     };
     return {
-      // 表单数据
+      // 表单数据s
       form: {
         username: "13800138000",
         password: "123456"
       },
       // 表单规则
       rules: {
-        username: [{ validator: validateUsername, trigger: "blur" }]
+        username: [{ validator: validateUsername, trigger: "blur" }],
+        password:[ { required: true, message: '请输入密码', trigger: 'blur' }]
       }
     };
   },
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      this.$refs['form'].validate(valid => {
+      this.$refs["form"].validate(valid => {
+        console.log(valid);
         //   console.log(valid);
         // if (valid) {
         //   this.$axios({
@@ -56,18 +58,22 @@ export default {
         // } else {
         //   return false;
         // }
-        this.$store.dispatch('user/login', this.form).then(res=>{
+        if (valid) {
+          this.$store.dispatch("user/login", this.form).then(res => {
             console.log(res);
-            if(res === true){
-                this.$message.success("登录成功，返回上一个页面");
-                // 定时跳转
-                setTimeout(() => {
-                        this.$router.replace("/")
-                    }, 1000);
-            }  
-        })
+            if (res === true) {
+              this.$message.success("登录成功，返回上一个页面");
+              // 定时跳转
+              setTimeout(() => {
+                this.$router.replace("/");
+              }, 1000);
+            }
+          });
+        }else{
+          return false;
+        }
       });
-    // this.$store.commit("user/setName",res.data) 
+      // this.$store.commit("user/setName",res.data)
     }
   }
 };

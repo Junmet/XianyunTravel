@@ -29,7 +29,10 @@
 </template>
 
 <script>
+// 登录组件的引入
 import LoginForm from "@/components/user/loginForm"
+// 注册组件的引入
+import RegisterForm from "@/components/user/registerForm"
 export default {
     data(){
         return {
@@ -37,7 +40,8 @@ export default {
         }
     },
     components:{
-        LoginForm
+        LoginForm,
+        RegisterForm
     },
     methods: {
         handleChangeTab(index){
