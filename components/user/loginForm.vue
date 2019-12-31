@@ -45,7 +45,7 @@ export default {
     // 提交登录
     handleLoginSubmit() {
       this.$refs["form"].validate(valid => {
-        console.log(valid);
+        // console.log(valid);
         //   console.log(valid);
         // if (valid) {
         //   this.$axios({
@@ -60,7 +60,7 @@ export default {
         // }
         if (valid) {
           this.$store.dispatch("user/login", this.form).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res === true) {
               this.$message.success("登录成功，返回上一个页面");
               // 定时跳转
