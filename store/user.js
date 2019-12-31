@@ -30,5 +30,24 @@ export const actions = {
             // 返回 true 出去 用来判断是否登录成功 给予用户提示
             return true
         })
+    },
+    // 发送验证码
+    verification(store,data){
+        return this.$axios({
+            url: "/captchas",
+            method: "POST",
+            data: { tel:data }
+        }).then(res=>{
+            return res
+        })
+    },
+    register(store,data){
+        return this.$axios({
+            url: "/accounts/register",
+            method: "POST",
+            data: data
+        }).then(res=>{
+            return res
+        })
     }
 }
