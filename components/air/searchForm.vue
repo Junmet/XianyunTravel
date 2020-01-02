@@ -97,10 +97,12 @@ export default {
   methods: {
     // tab切换时触发
     handleSearchTab(item, index) {
-      console.log(item);
-      console.log(index);
+      // console.log(item);
+      // console.log(index);
       if (index === 1) {
-        this.$message.warning("您好，往返的功能还没开放，敬请期待！！");
+           this.$alert('您好，往返的功能还没开放，敬请期待！！', '温馨提示', {
+          confirmButtonText: '确定'
+        });
       }
     },
 
