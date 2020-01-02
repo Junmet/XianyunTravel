@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="cacheFlightsData" @setDataList="setDataList"></FlightsFilters>
 
         <!-- 航班头部布局 -->
         <FlightsListHead></FlightsListHead>
@@ -44,22 +44,32 @@ import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead";
 // 机票列表组件的引入
 import FlightsItem from "@/components/air/flightsItem";
+import FlightsFilters from "@/components/air/flightsFilters";
 export default {
   data() {
     return {
       // 所有航班的总数据
-      flightsData: {},
-    //航班列表数据 用来实现分页
-      dataList:[],
-      pageIndex:1, //当前多少页
-      pageSize:5,  //多少条数据
-      total:0 //总页数
+      flightsData: {
+        info: {},
+        options: {}
+      },
+      // 缓存的变量，当该变量一旦被赋值之后不会被修改
+      cacheFlightsData: {
+        info: {},
+        options: {}
+      },
+      //航班列表数据 用来实现分页
+      dataList: [],
+      pageIndex: 1, //当前多少页
+      pageSize: 5, //多少条数据
+      total: 0 //总页数
     };
   },
   // 注册
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
   mounted() {
     // console.log( this.$route); 拿到url地址栏的数据
@@ -67,34 +77,43 @@ export default {
       url: "/airs",
       params: this.$route.query
     }).then(res => {
-    //   console.log(res);
+      console.log(res);
       // 所有航班的总数据
       this.flightsData = res.data;
       //航班列表数据 用来实现分页
-      this.dataList = this.flightsData.flights
-        // 获取总页数
-      this.total = this.flightsData.total
+      this.dataList = this.flightsData.flights;
+      // 获取总页数
+      this.total = this.flightsData.total;
+      // 这个是缓存的变量，一旦赋值之后不能被改
+      this.cacheFlightsData = { ...res.data };
     });
   },
-//   使用计算属性 计算分页数据
-computed: {
-  pagingList(){
-    //   当没有数据的时候返回空数组
-      if(!this.dataList) return []
+  //   使用计算属性 计算分页数据
+  computed: {
+    pagingList() {
+      //   当没有数据的时候返回空数组
+      if (!this.dataList) return [];
 
-    return  this.dataList.slice((this.pageIndex-1) * this.pageSize,this.pageIndex * this.pageSize)
-  }  
-},
-  methods:{
-      handleSizeChange(value){
-        //   console.log(value);
-          this.pageSize = value
-          
-      },
-      handleCurrentChange(value){
-        //   console.log(value);
-          this.pageIndex =  value
-      }
+      return this.dataList.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    }
+  },
+  methods: {
+    handleSizeChange(value) {
+      //   console.log(value);
+      this.pageSize = value;
+    },
+    handleCurrentChange(value) {
+      //   console.log(value);
+      this.pageIndex = value;
+    },
+    //   筛选航空公司更新数据
+    setDataList(data) {
+      this.dataList = data;
+      this.total = data.length;
+    }
   }
 };
 </script>
