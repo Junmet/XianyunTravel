@@ -75,13 +75,14 @@ export default {
     }).then(res => {
       // console.log(res);
       let { data } = res.data;
-      console.log(data);
+      // console.log(data);
       this.sales = data;
     });
+    // console.log(this.sales);
   },
   filters: {
     toFixed(value) {
-      console.log(value);
+      // console.log(value);
       // 保留2位小数 原生方法
       return Number(value).toFixed(2);
     }

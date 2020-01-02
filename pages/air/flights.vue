@@ -15,7 +15,7 @@
                 
                 <!-- 航班信息 -->
                 <FlightsItem></FlightsItem>
-                
+
             </div>
 
             <!-- 侧边栏 -->
@@ -43,6 +43,15 @@ export default {
     components:{
         FlightsListHead,
         FlightsItem
+    },
+    mounted(){
+        // console.log( this.$route); 拿到url地址栏的数据
+        this.$axios({
+            url:'/airs',
+            params:this.$route.query
+        }).then(res=>{
+            console.log(res);
+        })
     }
 }
 </script>

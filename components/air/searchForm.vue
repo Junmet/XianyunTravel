@@ -115,7 +115,7 @@ export default {
     },
 
     // 到达城市输入框失去焦点时候默认选中第一个城市
-    handleDestChange() {
+    handleDestChange() {     
       if (this.destData.length > 0) {
         this.form.destCity = this.destData[0].value;
         this.form.destCode = this.destData[0].sort;
@@ -137,23 +137,17 @@ export default {
           name: value
         }
       });
-      //   console.log(res);
       let { data } = res.data;
-      // console.log(data);
       this.departData = data.map(item => {
-        // console.log(item);
         item.value = item.name.replace("市", "");
-        // console.log(item.value);
         return item;
       });
-      // console.log(this.departData);
       callback(this.departData);
     },
 
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     async queryDestSearch(value, callback) {
-      //  console.log(value);
       if (!value) {
         callback([]);
         return;
@@ -164,29 +158,25 @@ export default {
           name: value
         }
       });
-      //   console.log(res);
       let { data } = res.data;
-      // console.log(data);
-      this.destCity = data.map(item => {
-        // console.log(item);
+      this.destData = data.map(item => {
         item.value = item.name.replace("市", "");
-        // console.log(item.value);
         return item;
       });
-      console.log(this.destCity);
-      callback(this.destCity);
+      callback(this.destData);
     },
 
     // 出发城市下拉选择时触发，item选中的对象
     handleDepartSelect(item) {
-      console.log(item);
-      this.departCode = item.sort;
-      // console.log(this.departCode );
+      this.form.departCode = item.sort;
+
     },
 
     // 目标城市下拉选择时触发
     handleDestSelect(item) {
-      this.destCode = item.sort;
+      this.form.destCode = item.sort;
+      console.log(item.sort);
+      
       // console.log(this.destCode);
     },
 
@@ -247,6 +237,8 @@ export default {
         path: "/air/flights",
         query: this.form
       });
+
+      
     }
   },
   mounted() {}
