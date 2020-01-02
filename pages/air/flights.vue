@@ -67,7 +67,7 @@ export default {
       url: "/airs",
       params: this.$route.query
     }).then(res => {
-      console.log(res);
+    //   console.log(res);
       // 所有航班的总数据
       this.flightsData = res.data;
       //航班列表数据 用来实现分页
