@@ -14,7 +14,8 @@
                 
                 
                 <!-- 航班信息 -->
-                <FlightsItem></FlightsItem>
+                <!-- 把获取到的数据传给子组件 :data="item"-->
+                <FlightsItem v-for="(item,index) in flightsData.flights" :key="index" :data="item"></FlightsItem>
 
             </div>
 
@@ -36,7 +37,8 @@ import FlightsItem from "@/components/air/flightsItem"
 export default {
     data(){
         return {
-            
+            // 所有航班的总数据
+            flightsData:{}
         }
     },
     // 注册
@@ -51,6 +53,7 @@ export default {
             params:this.$route.query
         }).then(res=>{
             console.log(res);
+            this.flightsData = res.data
         })
     }
 }
