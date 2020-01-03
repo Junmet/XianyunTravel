@@ -91,9 +91,7 @@ export default {
       if ((arr - dep) < 0) {
         arr += 24 * 60;
       }
-
       let res = arr - dep;
-
       return `${Math.floor(res / 60)}时${res % 60}分`;
     }
   }

@@ -49,10 +49,7 @@ export default {
   data() {
     return {
       // 所有航班的总数据
-      flightsData: {
-        info: {},
-        options: {}
-      },
+      flightsData: {},
       // 缓存的变量，当该变量一旦被赋值之后不会被修改
       cacheFlightsData: {
         info: {},
