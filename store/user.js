@@ -1,8 +1,8 @@
 //保存user下的数据
-export const state = {
+export const state =()=> ({
     // 这是登录后的数据，包含token和user的对象
     userInfo:{}
-}
+})
 
 // 同步修改state的数据
 export const mutations = {

@@ -52,8 +52,10 @@ export default {
       flightsData: {},
       // 缓存的变量，当该变量一旦被赋值之后不会被修改
       cacheFlightsData: {
+        // 发送请求时是异步 防止加载的时候没有这个对象会报错所以 默认给个空对像
         info: {},
-        options: {}
+        options: {},
+        flights:[]
       },
       //航班列表数据 用来实现分页
       dataList: [],
@@ -90,7 +92,7 @@ export default {
     pagingList() {
       //   当没有数据的时候返回空数组
       if (!this.dataList) return [];
-
+      //筛选数据 返回一个筛选后的新数组
       return this.dataList.slice(
         (this.pageIndex - 1) * this.pageSize,
         this.pageIndex * this.pageSize
@@ -106,7 +108,7 @@ export default {
       //   console.log(value);
       this.pageIndex = value;
     },
-    //   筛选航空公司更新数据
+    //   筛选航空公司更新数据(过滤布局 子传父)
     setDataList(data) {
       this.dataList = data;
       this.total = data.length;
