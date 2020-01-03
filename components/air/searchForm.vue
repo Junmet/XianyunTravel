@@ -238,6 +238,7 @@ export default {
         query: this.form
       });
 
+      this.$store.commit('air/searchRecord', this.form)
       
     }
   },

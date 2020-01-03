@@ -33,6 +33,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
+        <FlightsAside></FlightsAside>
       </div>
     </el-row>
   </section>
@@ -44,7 +45,10 @@ import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead";
 // 机票列表组件的引入
 import FlightsItem from "@/components/air/flightsItem";
+// 机票过滤组件的引入
 import FlightsFilters from "@/components/air/flightsFilters";
+// 机票搜索历史侧边栏组件的引入
+import FlightsAside from "@/components/air/flightsAside";
 export default {
   data() {
     return {
@@ -55,7 +59,7 @@ export default {
         // 发送请求时是异步 防止加载的时候没有这个对象会报错所以 默认给个空对像
         info: {},
         options: {},
-        flights:[]
+        flights: []
       },
       //航班列表数据 用来实现分页
       dataList: [],
@@ -68,7 +72,8 @@ export default {
   components: {
     FlightsListHead,
     FlightsItem,
-    FlightsFilters
+    FlightsFilters,
+    FlightsAside
   },
   mounted() {
     // console.log( this.$route); 拿到url地址栏的数据
@@ -112,6 +117,28 @@ export default {
     setDataList(data) {
       this.dataList = data;
       this.total = data.length;
+    }
+  },
+  watch: {
+    $route() {
+      // console.log(this.$route);
+      
+      this.$axios({
+        url: "/airs",
+        params: this.$route.query
+      }).then(res => {
+        // console.log(res);
+        // 所有航班的总数据
+        this.flightsData = res.data;
+        //航班列表数据 用来实现分页
+        this.dataList = this.flightsData.flights;
+        // 获取总页数
+        this.total = this.flightsData.total;
+        // 让页码保持在第一页 当第一次点击页码到最后一页的时候,
+        // 下次请求其他地方的时候还是会保持上次的页码数在最后一页的页码 所以要请求其他地方的飞机票的时候把页码保持在第一页,
+        //每个地方的飞机票数据不一样（班次）
+        this.pageIndex = 1
+      });
     }
   }
 };
