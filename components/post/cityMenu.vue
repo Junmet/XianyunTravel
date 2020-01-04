@@ -17,10 +17,6 @@
         <span class="hov">热门城市</span>
         <i class="el-icon-arrow-right ico"></i>
       </div>
-      <div class="menu-item" @mouseenter="isShowMenu=true" @mouseleave="leave">
-        <span class="hov">热门城市</span>
-        <i class="el-icon-arrow-right ico"></i>
-      </div>
     </div>
     <div class="city-menu" v-if="isShowMenu">
       <ul>
@@ -123,6 +119,7 @@ export default {
   height: 200px;
   left: 259px;
   top: 0px;
+  z-index: 4;
   background-color: #fff;
   position: absolute;
   border-top: 1px solid #ddd;
