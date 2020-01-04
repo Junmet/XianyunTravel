@@ -63,6 +63,8 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    <!-- 为了计算属性 计算机票的总价格 -->
+    <span>{{airFare}}</span>
   </div>
 </template>
 
@@ -93,6 +95,27 @@ export default {
       air: this.$route.query.id //航班id
     };
   },
+  // 计算属性
+   computed: {
+      // 计算过总价格 通过vuex 把数据传给子组件右侧栏显示
+      airFare(){
+        let price = 0
+
+        if(!this.data.seat_infos.org_settle_price) return
+        // 机票价格
+        price += this.data.seat_infos.org_settle_price
+        // 机建＋燃油
+        price += this.data.airport_tax_audlet
+        // 保险
+        price += this.insurances.length * 30;
+        // 人数
+        price *= this.users.length
+        // 把数据放到vuex
+        this.$store.commit("air/airTickePrice", price)
+
+        return ""
+      }
+    },
   methods: {
     //   处理保险id
     handleInsurance(id) {

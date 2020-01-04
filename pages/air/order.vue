@@ -8,7 +8,7 @@
 
             <!-- 侧边栏 -->
             <div class="aside">
-                          
+                    <OrderAside :data="airTicketParticulars"></OrderAside>     
             </div>
         </el-row>
     </div>
@@ -16,16 +16,21 @@
 
 <script>
 import OrderForm from "@/components/air/orderForm"
+import OrderAside from "@/components/air/orderAside"
 export default {
     data () {
         return {
             airTicketParticulars:{
-                insurances:[]
+                // 保险列表
+                insurances:[],
+                // 座位的列表
+                seat_infos: {}
             }      
         }
     },
     components:{
-        OrderForm
+        OrderForm,
+        OrderAside
     },
     mounted(){
         // console.log(this.$route.query);
@@ -36,7 +41,7 @@ export default {
                 seat_xid:this.$route.query.seat_xid
             }
         }).then(res=>{
-            // console.log(res.data.insurances);
+            console.log(res.data);
             this.airTicketParticulars = res.data
         })
     },

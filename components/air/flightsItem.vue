@@ -79,6 +79,8 @@ export default {
   // 计算属性  实现时间差
   computed: {
     mistiming() {
+      // 数据还未请求回来
+      if (!this.data.dep_time) return "";
       // 切割字符串 返回一个数组
       let arrtime = this.data.arr_time.split(":");
       let deptime = this.data.dep_time.split(":");
