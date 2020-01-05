@@ -41,7 +41,7 @@ export default {
                 seat_xid:this.$route.query.seat_xid
             }
         }).then(res=>{
-            console.log(res.data);
+            // console.log(res.data);
             this.airTicketParticulars = res.data
         })
     },

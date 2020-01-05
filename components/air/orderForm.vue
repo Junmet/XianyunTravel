@@ -174,6 +174,16 @@ export default {
           }
       }).then(res=>{
           console.log(res);
+          // 生成订单把订单id传过去
+          const {id} = res.data.data
+          // console.log(id);
+          this.$router.push({
+            path:"/air/pay",
+            query:{
+              id
+            }
+          })
+          
           
       })
     }
