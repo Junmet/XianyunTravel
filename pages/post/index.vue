@@ -6,32 +6,30 @@
         <div class="sidebar">
           <!-- 城市列表 -->
           <!-- <div class="citylist">123</div> -->
-          <CityMenu :data="citylist"></CityMenu>
+          <CityMenu :data="citylist" @examineCity="examineCity"></CityMenu>
 
           <!-- 推荐城市 -->
           <div class="recommend">
             <h4 class="aside-title">推荐城市</h4>
-            <a href="/post#" class="a_img">
-              <img class="recommendCity-img" src="http://157.122.54.189:9093/images/pic_sea.jpeg">
+            <a href="/post" class="a_img">
+              <img class="recommendCity-img" src="http://157.122.54.189:9093/images/pic_sea.jpeg" />
             </a>
           </div>
         </div>
       </el-col>
-
 
       <!-- 文章列表 -->
       <el-col :span="17">
         <div class="post-wrapper">
           <!-- 搜索 -->
           <div class="city-search">
-            <el-input class="elinput" placeholder="请输入内容">
-              <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-input class="elinput"  v-model="examineCityData" placeholder="请输入想去的地方，比如：'广州'">
+              <el-button slot="append" icon="el-icon-search" @click="searchCity"></el-button>
             </el-input>
             <!-- 推荐 -->
-            <div class="recommend">推荐:
-              <span>广州</span>
-              <span>上海</span>
-              <span>北京</span>
+            <div class="recommend">
+              推荐:
+              <span v-for="(item,index) in recommend" :key="index" @click="recommends(item)"><a href="#">{{item}}</a></span>
             </div>
           </div>
           <!-- 推荐攻略 -->
@@ -44,91 +42,109 @@
           </div>
           <!-- 攻略文章 -->
           <div class="guide_post">
-             <!-- 攻略文章组件 -->
-             <PostList :data="item" v-for="(item,index) in articleLists" :key="index" ></PostList>
+            <!-- 攻略文章组件 -->
+            <PostList :data="item" v-for="(item,index) in articleLists" :key="index"></PostList>
           </div>
           <!-- 分页 -->
-           <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="pageIndex"
-              :page-sizes="[3,5,10]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total">
-            </el-pagination>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageIndex"
+            :page-sizes="[3,5,10]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
         </div>
       </el-col>
-
     </el-row>
-    
   </div>
 </template>
 
 <script>
-import CityMenu from "@/components/post/cityMenu"
-import PostList from "@/components/post/postList"
+import CityMenu from "@/components/post/cityMenu";
+import PostList from "@/components/post/postList";
 export default {
-  data () {
+  data() {
     return {
-      pageIndex:1, //当前多少页
-      pageSize:3, //多少条数据
-      total:100,   //数据总数
+      pageIndex: 1, //当前多少页
+      pageSize: 3, //多少条数据
+      total: 0, //数据总数
       // 城市菜单列表
-      citylist:[],
+      citylist: [],
       // 文章列表数据 实现分页
-      articleLists:[
+      articleLists: [
         {
-          images:[],
-          account:{}
+          images: [],
+          account: {}
         }
-      ]
-    }
+      ],
+      // 子组件城市数据
+      examineCityData: "",
+      recommend:["广州","上海","北京"]
+    };
   },
-  components:{
+  components: {
     CityMenu,
     PostList
   },
-  methods:{
+  methods: {
+    // 搜索城市
+    searchCity(){
+      this.articleList();
+    },
+    // 推荐城市
+    recommends(item){
+      // console.log(item);
+      this.examineCity(item)  
+    },
     // 显示数据页数
-    handleSizeChange(value){
+    handleSizeChange(value) {
       // console.log(value);
-      this.pageSize =value
-      this.articleList()
-      
+      this.pageSize = value;
+      this.articleList();
     },
     // 页码数
-    handleCurrentChange(value){
+    handleCurrentChange(value) {
       // console.log(value);
-      this.pageIndex = value
-      this.articleList()
-      
+      this.pageIndex = value;
+      this.articleList();
     },
-    articleList(){
+    articleList() {
       this.$axios({
-        url:"/posts",
-        params:{
-          _start:(this.pageIndex-1)*this.pageSize,
-          _limit:this.pageSize
+        url: "/posts",
+        params: {
+          // 三元表达式  有就把城市做为参数去请求 没有就是空
+          city: this.examineCityData ? this.examineCityData : null,
+          _start: (this.pageIndex - 1) * this.pageSize,
+          _limit: this.pageSize
         }
-      }).then(res=>{
+      }).then(res => {
         console.log(res);
-        const {data} = res.data
-        this.articleLists = data
-      })
+        const { data,total } = res.data;
+        this.articleLists = data;
+        this.total =total
+      });
+    },
+    // 接收子组件传过来的数据（城市名称）
+    examineCity(data) {
+      this.examineCityData = data;
+      // console.log(this.examineCityData);
+      this.pageIndex = 1;
+      this.articleList();
     }
   },
-  mounted () {
+  mounted() {
     // 城市菜单列表
     this.$axios({
-      url:"/posts/cities",
-    }).then(res=>{
+      url: "/posts/cities"
+    }).then(res => {
       // console.log(res);
-      const {data} =res.data
-      this.citylist =data
-    })
+      const { data } = res.data;
+      this.citylist = data;
+    });
     // 获取列表数据
-    this.articleList()
+    this.articleList();
   }
 };
 </script>
@@ -138,10 +154,10 @@ export default {
   width: 1000px;
   margin: 0 auto;
 }
-.map{
-margin-top: 30px
+.map {
+  margin-top: 30px;
 }
-.sidebar{
+.sidebar {
   width: 260px;
   // position: relative;
   // .citylist{
@@ -149,46 +165,46 @@ margin-top: 30px
   //   height: 165px;
   //   background-color: aqua;
   // }
-  .recommend{
+  .recommend {
     margin-top: 20px;
-    .aside-title{
+    .aside-title {
       font-weight: 400;
       padding-bottom: 10px;
       border-bottom: 1px solid #ddd;
       margin-bottom: 10px;
     }
-    .a_img{
-      display:inline-block;
+    .a_img {
+      display: inline-block;
       width: 260px;
-      .recommendCity-img{
-        width:100%;
+      .recommendCity-img {
+        width: 100%;
       }
     }
   }
 }
-.post-wrapper{
+.post-wrapper {
   width: 700px;
-  .elinput{
+  .elinput {
     border: 2px solid orange;
   }
-  .recommend{
+  .recommend {
     padding: 10px 0;
     font-size: 12px;
     color: #666;
-    > span{
+    > span {
       margin-right: 5px;
     }
   }
-  .recommend_strategy{
+  .recommend_strategy {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
     position: relative;
-    .strategy_size{
+    .strategy_size {
       font-size: 18px;
       color: orange;
       line-height: 40px;
     }
-    .line{
+    .line {
       width: 72px;
       height: 2px;
       background-color: orange;
@@ -197,7 +213,7 @@ margin-top: 30px
       left: 0;
     }
   }
-  .el-pagination{
+  .el-pagination {
     text-align: center;
     margin: 15px 0;
   }

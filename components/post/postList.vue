@@ -11,7 +11,8 @@
       <!-- 右边文章 -->
       <el-col :span="16">
         <div class="item-text">
-          <h4>{{data.title}}</h4>
+          <!-- 页面跳转附带id -->
+          <h4><nuxt-link :to="`/post/detail?id=${data.id}`">{{data.title}}</nuxt-link></h4>
           <p class="post-desc" style="margin: 15px 0">
             <a href="#">
                 {{data.summary}}
@@ -28,7 +29,7 @@
               <div class="post_img">
                 by
                 <a href="#">
-                  <img class="user_img" align="middle" src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt/>
+                  <img class="user_img" align="middle" :src="$axios.defaults.baseURL+data.account.defaultAvatar" alt/>
                 </a>
                 <a class="user_name" href="#">{{data.account.nickname}}</a>
               </div>
@@ -48,7 +49,8 @@
         <!-- 文字内容 -->
               <el-col :span="24">
         <div class="item-text">
-          <h4>{{data.title}}</h4>
+           <!-- 页面跳转附带id -->
+          <h4><nuxt-link :to="`/post/detail?id=${data.id}`">{{data.title}}</nuxt-link></h4>
           <p class="post-desc"  style="margin-top:15px">
             <a href="#">
               {{data.summary}}
@@ -71,7 +73,7 @@
               <div class="post_img">
                 by
                 <a href="#">
-                  <img class="user_img" align="middle" src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt/>
+                  <img class="user_img" align="middle" :src="$axios.defaults.baseURL+data.account.defaultAvatar"  alt/>
                 </a>
                 <a class="user_name" href="#">{{data.account.nickname}}</a>
               </div>
@@ -98,10 +100,6 @@ export default {
         return {}
       }
     }
-  },
-  mounted () {
-    // console.log(data);
-    
   }
 };
 </script>
@@ -124,6 +122,9 @@ export default {
     white-space: nowrap;
     font-weight: 400;
     font-size: 18px;
+    a:hover{
+      color: orange;
+    }
   }
   .post-desc {
     // margin-bottom: 15px;

@@ -16,7 +16,7 @@
         <li class="sitelist" v-for="(item,index) in data[cityIndex].children" :key="index">
           <span class="italic">{{index+1}}</span>
           <span class="site">
-            <el-link class="link" :underline="false">
+            <el-link class="link" :underline="false" @click="examine(item.city)">
               <strong class="city">{{item.city}}</strong>
               <span class="desc">{{item.desc}}</span>
             </el-link>
@@ -50,6 +50,9 @@ export default {
     Dynamics(index){
       this.cityIndex =index
       this.isShowMenu=true
+    },
+    examine(data){
+      this.$emit("examineCity",data)
     }
   }
 };
