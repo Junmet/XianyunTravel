@@ -1,67 +1,24 @@
 <template>
-  <div class="contianer">
+  <div class="contianer" @mouseleave="isShowMenu=false">
     <div class="bor">
-      <div class="menu-item" @mouseenter="isShowMenu=true" @mouseleave="leave">
-        <span class="hov">热门城市</span>
-        <i class="el-icon-arrow-right ico"></i>
-      </div>
-      <div class="menu-item" @mouseenter="isShowMenu=true" @mouseleave="leave">
-        <span class="hov">热门城市</span>
-        <i class="el-icon-arrow-right ico"></i>
-      </div>
-      <div class="menu-item" @mouseenter="isShowMenu=true" @mouseleave="leave">
-        <span class="hov">热门城市</span>
-        <i class="el-icon-arrow-right ico"></i>
-      </div>
-      <div class="menu-item" @mouseenter="isShowMenu=true" @mouseleave="leave">
-        <span class="hov">热门城市</span>
+      <div
+        class="menu-item"
+        @mouseenter="Dynamics(index)"
+        v-for="(item,index) in data"
+        :key="index"
+      >
+        <span class="hov">{{item.type}}</span>
         <i class="el-icon-arrow-right ico"></i>
       </div>
     </div>
     <div class="city-menu" v-if="isShowMenu">
       <ul>
-        <li class="sitelist">
-          <span class="italic">1</span>
+        <li class="sitelist" v-for="(item,index) in data[cityIndex].children" :key="index">
+          <span class="italic">{{index+1}}</span>
           <span class="site">
             <el-link class="link" :underline="false">
-              <strong class="city">北京</strong>
-              <span class="desc">实际的身份就拉开建设的发骄傲士大夫</span>
-            </el-link>
-          </span>
-        </li>
-        <li class="sitelist">
-          <span class="italic">1</span>
-          <span class="site">
-            <el-link class="link" :underline="false">
-              <strong class="city">北京</strong>
-              <span class="desc">实际的身份就拉开建设的发骄傲士大夫</span>
-            </el-link>
-          </span>
-        </li>
-        <li class="sitelist">
-          <span class="italic">1</span>
-          <span class="site">
-            <el-link class="link" :underline="false">
-              <strong class="city">北京</strong>
-              <span class="desc">实际的身份就拉开建设的发骄傲士大夫</span>
-            </el-link>
-          </span>
-        </li>
-        <li class="sitelist">
-          <span class="italic">1</span>
-          <span class="site">
-            <el-link class="link" :underline="false">
-              <strong class="city">北京</strong>
-              <span class="desc">实际的身份就拉开建设的发骄傲士大夫</span>
-            </el-link>
-          </span>
-        </li>
-        <li class="sitelist">
-          <span class="italic">1</span>
-          <span class="site">
-            <el-link class="link" :underline="false">
-              <strong class="city">北京</strong>
-              <span class="desc">实际的身份就拉开建设的发骄傲士大夫</span>
+              <strong class="city">{{item.city}}</strong>
+              <span class="desc">{{item.desc}}</span>
             </el-link>
           </span>
         </li>
@@ -72,15 +29,27 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
+  },
   data() {
     return {
-      //  @mouseleave="isShowMenu=false"
-      isShowMenu: false
+      //  @mouseleave="isShowMenu=false" 移出隐藏
+      isShowMenu: false,
+      // 每个栏目推荐的城市的城市数据渲染页
+      cityIndex:0
     };
   },
   methods: {
-    leave() {
-      this.isShowMenu = !this.isShowMenu;
+    // 鼠标移入
+    Dynamics(index){
+      this.cityIndex =index
+      this.isShowMenu=true
     }
   }
 };
@@ -151,12 +120,21 @@ export default {
       font-size: 14px;
       font-weight: 400;
     }
+    :hover{
+    text-decoration:underline;
+    color: #999
+  }
     .desc {
       padding-left: 15px;
       font-size: 14px;
       //   font-weight: 400;
       color: #999;
     }
+    :hover{
+    text-decoration:underline;
+    color: #999
   }
+  }
+  
 }
 </style>

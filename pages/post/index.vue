@@ -6,7 +6,7 @@
         <div class="sidebar">
           <!-- 城市列表 -->
           <!-- <div class="citylist">123</div> -->
-          <CityMenu></CityMenu>
+          <CityMenu :data="citylist"></CityMenu>
 
           <!-- 推荐城市 -->
           <div class="recommend">
@@ -45,7 +45,7 @@
           <!-- 攻略文章 -->
           <div class="guide_post">
              <!-- 攻略文章组件 -->
-             <PostList></PostList>
+             <PostList :data="item" v-for="(item,index) in articleLists" :key="index" ></PostList>
           </div>
           <!-- 分页 -->
            <el-pagination
@@ -61,6 +61,7 @@
       </el-col>
 
     </el-row>
+    
   </div>
 </template>
 
@@ -70,9 +71,18 @@ import PostList from "@/components/post/postList"
 export default {
   data () {
     return {
-      pageIndex:1,
-      pageSize:5,
-      total:8
+      pageIndex:1, //当前多少页
+      pageSize:3, //多少条数据
+      total:100,   //数据总数
+      // 城市菜单列表
+      citylist:[],
+      // 文章列表数据 实现分页
+      articleLists:[
+        {
+          images:[],
+          account:{}
+        }
+      ]
     }
   },
   components:{
@@ -80,8 +90,45 @@ export default {
     PostList
   },
   methods:{
-    handleSizeChange(){},
-    handleCurrentChange(){}
+    // 显示数据页数
+    handleSizeChange(value){
+      // console.log(value);
+      this.pageSize =value
+      this.articleList()
+      
+    },
+    // 页码数
+    handleCurrentChange(value){
+      // console.log(value);
+      this.pageIndex = value
+      this.articleList()
+      
+    },
+    articleList(){
+      this.$axios({
+        url:"/posts",
+        params:{
+          _start:(this.pageIndex-1)*this.pageSize,
+          _limit:this.pageSize
+        }
+      }).then(res=>{
+        console.log(res);
+        const {data} = res.data
+        this.articleLists = data
+      })
+    }
+  },
+  mounted () {
+    // 城市菜单列表
+    this.$axios({
+      url:"/posts/cities",
+    }).then(res=>{
+      // console.log(res);
+      const {data} =res.data
+      this.citylist =data
+    })
+    // 获取列表数据
+    this.articleList()
   }
 };
 </script>
@@ -152,6 +199,7 @@ margin-top: 30px
   }
   .el-pagination{
     text-align: center;
+    margin: 15px 0;
   }
 }
 </style>
