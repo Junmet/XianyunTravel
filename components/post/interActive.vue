@@ -3,7 +3,7 @@
     <div class="layout">
       <div class="discuss">
         <i class="iconfont iconpinglun"></i>
-        <p>评论(100)</p>
+        <p>评论({{article[0].comments.length}})</p>
       </div>
       <div class="discuss">
         <i class="iconfont iconstar1"></i>
@@ -15,14 +15,23 @@
       </div>
       <div class="discuss">
         <i class="iconfont iconding"></i>
-        <p>点赞(74)</p>
+        <p>点赞({{article[0].like}})</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props:{
+    article:{
+        type:Array,
+        default(){
+          return []
+        }
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
