@@ -22,7 +22,9 @@
     </el-row>
     <div>
       <!-- 评论内容 -->
-      是我输了
+      <div class="no-comments">
+                                    暂无评论，赶紧抢占沙发！
+      </div>
     </div>
      <!-- 分页 -->
           <el-pagination
@@ -73,7 +75,13 @@ export default {
     justify-content: space-between;
     margin-bottom: 30px
   }
-  
+  .no-comments{
+        font-size: 14px;
+        color: #999;
+        padding: 30px;
+        text-align: center;
+        border: 1px dashed #dddddd;
+    }
 }
  .avatar-uploader{
     border: 1px dashed #d9d9d9!important;

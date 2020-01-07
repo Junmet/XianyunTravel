@@ -17,7 +17,7 @@
             </el-form-item>
 
             <el-form-item class="select" label="选择城市">
-              <el-autocomplete v-model="state4" placeholder="请输入内容"></el-autocomplete>
+              <el-autocomplete  placeholder="请输入内容"></el-autocomplete>
             </el-form-item>
           </el-form>
         </div>
