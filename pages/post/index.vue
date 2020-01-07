@@ -37,7 +37,7 @@
             <el-row type="flex" justify="space-between">
               <span class="strategy_size">推荐攻略</span>
               <div class="line"></div>
-              <el-button type="primary" icon="el-icon-edit">写游记</el-button>
+              <el-button type="primary" icon="el-icon-edit" @click="create">写游记</el-button>
             </el-row>
           </div>
           <!-- 攻略文章 -->
@@ -89,6 +89,12 @@ export default {
     PostList
   },
   methods: {
+    // 写游记跳转
+    create(){
+      this.$router.push({
+        path:"/post/create"
+      })
+    },
     // 搜索城市
     searchCity(){
       this.articleList();
