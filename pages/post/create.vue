@@ -7,13 +7,15 @@
           <p>分享你的个人游记，让更多人看到哦！</p>
         </div>
         <div>
-          <el-form>
+          <el-form ref="dataForm" :model="dataForm">
             <el-form-item>
-              <el-input placeholder="请输入内容"></el-input>
+              <el-input v-model="dataForm.title" placeholder="请输入内容"></el-input>
             </el-form-item>
             <!-- 富文本 -->
             <el-form-item>
-              <VueEditor :config="config" ref="vueEditor" class="Ftext" />
+              <div>
+                <VueEditor :config="config" ref="vueEditor"/>
+              </div>
             </el-form-item>
 
             <el-form-item class="select" label="选择城市">
@@ -22,7 +24,7 @@
           </el-form>
         </div>
         <div class="create-button">
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submit">提交</el-button>
           <span>
             或着
             <a href="#" style="color:orange">保存到草稿</a>
@@ -47,9 +49,9 @@
 </template>
 
 <script>
+// import VueEditor from "vue-word-editor";
 import "quill/dist/quill.snow.css";
 let VueEditor;
-
 if (process.browser) {
   VueEditor = require("vue-word-editor").default;
 }
@@ -57,6 +59,11 @@ if (process.browser) {
 export default {
   data() {
     return {
+      // 表单数据
+      dataForm:{
+        title:""
+      },
+
       config: {
         // 上传图片的配置
         uploadImage: {
@@ -82,6 +89,11 @@ export default {
 
   components: {
     VueEditor
+  },
+  methods:{
+    submit(){
+      console.log(this.dataForm.title);
+    }
   }
 };
 </script>

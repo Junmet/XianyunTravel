@@ -33,7 +33,9 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     { src: '@/plugins/localStorage', ssr: false },
-    '@/plugins/axios'
+    // { src: '@/plugins/vue-word-editor', ssr: false },
+    '@/plugins/axios',
+    // "@/plugins/vue-word-editor"
   ],
   /*
   ** Nuxt.js dev-modules

@@ -94,10 +94,7 @@ export default {
   z-index: 4;
   background-color: #fff;
   position: absolute;
-  border-top: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;
+  border: 1px solid #ddd;
   .sitelist {
     // line-height: 40px;
     font-size: 14px;

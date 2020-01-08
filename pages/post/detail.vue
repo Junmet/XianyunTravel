@@ -13,7 +13,7 @@
           <!-- 用户互动 -->
           <InterActive :article="article"></InterActive>
           <!-- 评论模块 -->
-          <CommentModule></CommentModule>
+          <CommentModule :dataID="dataID"></CommentModule>
         </div>
       </el-col>
       <!-- 相关攻略 -->
@@ -46,6 +46,8 @@ import PostRender from "@/components/post/postRender";
 export default {
   data() {
     return {
+      // 文章ID
+      dataID:"",
       // 文章详情内容
       article: [
         {
@@ -67,12 +69,14 @@ export default {
     // 相关攻略的跳转
     $route(to, from) {
       this.articlerequest();
+      this.dataID = to.query.id
     }
   },
   mounted() {
     this.articlerequest(), this.recommend();
   },
   methods: {
+    // 推荐
     recommend() {
       this.$axios({
         url: "/posts/recommend",
@@ -83,6 +87,7 @@ export default {
         this.strategy = res.data.data;
       });
     },
+    // 文章请求
     articlerequest() {
       this.$axios({
         url: "/posts",
@@ -92,6 +97,7 @@ export default {
       }).then(res => {
         const { data } = res.data;
         this.article = data;
+         this.dataID = this.$route.query.id
       });
     }
   }

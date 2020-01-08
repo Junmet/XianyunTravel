@@ -126,7 +126,7 @@ export default {
           _limit: this.pageSize
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         const { data,total } = res.data;
         this.articleLists = data;
         this.total =total
