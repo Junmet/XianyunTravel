@@ -7,8 +7,8 @@
           <p>分享你的个人游记，让更多人看到哦！</p>
         </div>
         <div>
-          <el-form ref="dataForm" :model="dataForm">
-            <el-form-item>
+          <el-form ref="dataForm" :rules="rules" :model="dataForm">
+            <el-form-item prop="title">
               <el-input v-model="dataForm.title" placeholder="请输入内容"></el-input>
             </el-form-item>
             <!-- 富文本 -->
@@ -18,7 +18,7 @@
               </div>
             </el-form-item>
 
-            <el-form-item class="select" label="选择城市">
+            <el-form-item class="select" label="选择城市" prop="city">
               <el-autocomplete
                 placeholder="请输入城市"
                 v-model="dataForm.city"
@@ -29,7 +29,7 @@
           </el-form>
         </div>
         <div class="create-button">
-          <el-button type="primary" @click="submit">提交</el-button>
+          <el-button type="primary" @click="submit(dataForm)">提交</el-button>
           <span>
             或着
             <a href="#" style="color:orange" @click="draft">保存到草稿</a>
@@ -64,8 +64,36 @@ if (process.browser) {
 
 export default {
   data() {
+    var validatetitle = (rule, value, callback) => {
+      if (value === "") {
+        callback(
+          this.$message({
+            message: "警告哦，标题必须写噢",
+            type: "warning"
+          })
+        );
+      } else {
+        callback();
+      }
+    };
+    var validatecity = (rule, value, callback) => {
+      if (value === "") {
+        callback(
+          this.$message({
+            message: "警告哦，城市必须写噢",
+            type: "warning"
+          })
+        );
+      } else {
+        callback();
+      }
+    };
     return {
-      dateTime:"",
+      rules: {
+        title: [{ validator: validatetitle }],
+        city: [{ validator: validatecity }]
+      },
+      dateTime: "",
       // 表单数据
       dataForm: {
         content: "",
@@ -82,12 +110,12 @@ export default {
           // res是结果，insert方法会把内容注入到编辑器中，res.data.url是资源地址
           uploadSuccess(res, insert) {
             // 在文件上传成功之后，将路径插入到富文本框
-            insert("http://157.122.54.189:9095" + res.data[0].url); 
+            insert("http://157.122.54.189:9095" + res.data[0].url);
           }
         },
         // 上传视频的配置
         uploadVideo: {
-         url: "http://157.122.54.189:9095/upload",
+          url: "http://157.122.54.189:9095/upload",
           name: "files",
           uploadSuccess(res, insert) {
             insert("http://157.122.54.189:9095" + res.data[0].url);
@@ -121,7 +149,7 @@ export default {
       });
       let { data } = res.data;
       console.log(data);
-      
+
       this.departData = data.map(item => {
         item.value = item.name;
         return item;
@@ -129,36 +157,47 @@ export default {
       callback(this.departData);
     },
     // 提交
-    submit() {
-      this.dataForm.content = this.$refs.vueEditor.editor.root.innerHTML;
-      this.$axios({
-        url:"/posts",
-        method:"POST",
-         headers: {
-          Authorization: "Bearer " + this.$store.state.user.userInfo.token
-        },
-        data:this.dataForm
-      }).then(res=>{
-        console.log(res);
+    submit(dataForm) {
+      this.$refs.dataForm.validate(valid => {
+        if (valid) {
+          this.dataForm.content = this.$refs.vueEditor.editor.root.innerHTML;
+          this.$axios({
+            url: "/posts",
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + this.$store.state.user.userInfo.token
+            },
+            data: this.dataForm
+          }).then(res => {
+            console.log(res);
             this.$message({
-          message: '恭喜你，新增成功',
-          type: 'success'
-        });
-      })
+              message: "恭喜你，新增成功",
+              type: "success"
+            });
+          });
+        } else {
+          return false;
+        }
+      });
     },
     // 保存到草稿
-    draft(){
+    draft() {
       this.dataForm.content = this.$refs.vueEditor.editor.root.innerHTML;
-      let dateTime = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
-      this.dateTime = dateTime
-      this.dataForm.time = this.dateTime    
-      this.$store.commit("post/storage",this.dataForm)
+      let dateTime = new Date(+new Date() + 8 * 3600 * 1000)
+        .toISOString()
+        .replace(/T/g, " ")
+        .replace(/\.[\d]{3}Z/, "");
+      this.dateTime = dateTime;
+      this.dataForm.time = this.dateTime;
+      this.$store.commit("post/storage", this.dataForm);
     },
     // 草稿返回数据
-    returningdata(index){
-      this.dataForm.city = this.$store.state.post.newly[index].city
-      this.$refs.vueEditor.editor.root.innerHTML = this.$store.state.post.newly[index].content
-      this.dataForm.title = this.$store.state.post.newly[index].title
+    returningdata(index) {
+      this.dataForm.city = this.$store.state.post.newly[index].city;
+      this.$refs.vueEditor.editor.root.innerHTML = this.$store.state.post.newly[
+        index
+      ].content;
+      this.dataForm.title = this.$store.state.post.newly[index].title;
     }
   }
 };
@@ -200,7 +239,7 @@ export default {
     }
     .draft-post-title {
       cursor: pointer;
-      &:hover{
+      &:hover {
         color: orange;
         text-decoration: underline;
       }
@@ -214,7 +253,7 @@ export default {
     margin-bottom: 60px;
   }
 }
-/deep/.ql-toolbar.ql-snow + .ql-container.ql-snow{
+/deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
   height: 400px;
 }
 </style>
