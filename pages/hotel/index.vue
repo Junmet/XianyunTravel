@@ -27,15 +27,23 @@
         </el-col>
       </el-row>
     </el-form>
+    <!-- 地图 -->
+    <div>
+        <Map></Map>
+    </div>
+    
+    <!-- 筛选 -->
+    <!-- 酒店列表 -->
   </div>
 </template>
 
 <script>
+import Map from "@/components/hotel/map"
 export default {
-  data() {
-    return {};
-  }
-};
+    components: {
+        Map
+    }
+}
 </script>
 
 <style scoped lang="less">
