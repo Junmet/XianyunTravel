@@ -28,20 +28,32 @@
       </el-row>
     </el-form>
     <!-- 地图 -->
-    <div>
+  
         <Map></Map>
-    </div>
+    
     
     <!-- 筛选 -->
+    
+      <Filtrate></Filtrate>
+    
     <!-- 酒店列表 -->
+      <TheMirage></TheMirage>
   </div>
 </template>
 
 <script>
+import Filtrate from "@/components/hotel/filtrate"
 import Map from "@/components/hotel/map"
+import TheMirage from "@/components/hotel/theMirage"
 export default {
     components: {
-        Map
+        Map,
+        Filtrate,
+        TheMirage
+    },
+    data () {
+      return {
+      }
     }
 }
 </script>

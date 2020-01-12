@@ -179,6 +179,8 @@ export default {
   mounted() {
     // 获取文章评论
     this.articlecomment();
+    // console.log(this.$axios.defaults.baseURL);
+    
   },
   // 监听地址栏id变化请求文章评论
   watch: {

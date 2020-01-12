@@ -55,30 +55,30 @@
               <div>
                 <el-row type="flex">
                   <el-col :span="6">
-                    <span>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <span>¥332</span>
+                    <span class="org">
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <span style="color:#000">¥332</span>
                     </span>
                   </el-col>
                   <el-col :span="6">
-                    <span>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <span>¥332</span>
+                    <span class="org">
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <span style="color:#000">¥332</span>
                     </span>
                   </el-col>
                   <el-col :span="12">
-                    <span>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <i  class="iconfont iconhuangguan"></i>
-                      <span>¥332</span>
+                    <span class="org">
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <i class="iconfont iconhuangguan"></i>
+                      <span style="color:#000">¥332</span>
                     </span>
                   </el-col>
                 </el-row>
@@ -87,19 +87,31 @@
           </el-row>
         </div>
       </div>
-      <div class="map_rigth">321321</div>
+      <div id="map_rigth">
+       <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=ccfbe1e30130566ce849229397e2d301"></script> 
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {
+    window.onLoad = function() {
+      var map = new AMap.Map("map_rigth");
+    };
+    var url =
+      "https://webapi.amap.com/maps?v=1.4.15&key=ccfbe1e30130566ce849229397e2d301值&callback=onLoad";
+    var jsapi =document.createElement("script");
+    jsapi.charset = "utf-8";
+    jsapi.src = url;
+    document.head.appendChild(jsapi);
+  }
+};
 </script>
 
 <style lang="less" scoped>
 .container {
-  width: 1000px;
-  margin: 20px auto;
   .hotel {
     display: flex;
     justify-content: space-between;
@@ -109,7 +121,7 @@ export default {};
     .hotel_left {
       width: 583px;
       height: 260px;
-      background-color: yellow;
+      // background-color: yellow;
       .bootom {
         margin-bottom: 20px;
         color: #666;
@@ -140,11 +152,14 @@ export default {};
         border-radius: 100%;
       }
     }
+    .org {
+      color: orange;
+    }
   }
-  .map_rigth {
+  #map_rigth {
     width: 420px;
     height: 260px;
-    background-color: aqua;
+    // background-color: aqua;
   }
 }
 </style>
